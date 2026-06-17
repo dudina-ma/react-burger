@@ -1,7 +1,7 @@
 .burger_ingredients {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: calc(var(--offset-base-size) * 10);
   max-width: 600px;
   height: 100%;
   overflow: hidden;
@@ -21,7 +21,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 40px;
+  gap: calc(var(--offset-base-size) * 10);
   min-height: 0;
   overflow-y: auto;
 }
@@ -30,14 +30,10 @@
   margin: 0;
 }
 
-.section_title {
-  margin: 0 0 24px;
-}
-
 .cards_grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: calc(var(--offset-base-size) * 6);
   margin: 0;
   padding: 0;
   list-style-type: none;

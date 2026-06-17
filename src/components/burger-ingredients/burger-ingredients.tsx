@@ -51,9 +51,9 @@ export const BurgerIngredients = ({
         </ul>
       </nav>
 
-      <section className={styles.ingredients_list}>
+      <section className={`${styles.ingredients_list} custom-scroll`}>
         <section className={styles.ingredients_section} id="bun">
-          <h2 className={`${styles.section_title} text text_type_main-medium`}>Булки</h2>
+          <h2 className="text text_type_main-medium m-0 mb-6">Булки</h2>
           <ul className={styles.cards_grid}>
             {buns.map((ingredient) => (
               <li key={ingredient._id}>
@@ -64,7 +64,7 @@ export const BurgerIngredients = ({
         </section>
 
         <section className={styles.ingredients_section} id="sauce">
-          <h2 className={`${styles.section_title} text text_type_main-medium`}>Соусы</h2>
+          <h2 className="text text_type_main-medium m-0 mb-6">Соусы</h2>
           <ul className={styles.cards_grid}>
             {sauces.map((ingredient) => (
               <li key={ingredient._id}>
@@ -75,9 +75,7 @@ export const BurgerIngredients = ({
         </section>
 
         <section className={styles.ingredients_section} id="main">
-          <h2 className={`${styles.section_title} text text_type_main-medium`}>
-            Начинки
-          </h2>
+          <h2 className="text text_type_main-medium m-0 mb-6">Начинки</h2>
           <ul className={styles.cards_grid}>
             {mains.map((ingredient) => (
               <li key={ingredient._id}>
