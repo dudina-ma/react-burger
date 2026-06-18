@@ -5,24 +5,26 @@ import {
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 
-import { ingredients } from '@utils/ingredients';
-
 import type { TIngredient } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
-const mockBun = ingredients.find((item) => item.type === 'bun')!;
+type TBurgerConstructorProps = {
+  ingredients: TIngredient[];
+};
 
-const mockFillings: TIngredient[] = [
-  ingredients.find((item) => item._id === '60666c42cc7b410027a1a9b9')!,
-  ingredients.find((item) => item._id === '60666c42cc7b410027a1a9b9')!,
-  ingredients.find((item) => item._id === '60666c42cc7b410027a1a9b6')!,
-];
+export const BurgerConstructor = ({
+  ingredients,
+}: TBurgerConstructorProps): React.JSX.Element => {
+  const mockBun = ingredients.find((item) => item.type === 'bun')!;
+  const mockSauce = ingredients.find((item) => item.type === 'sauce')!;
+  const mockMain = ingredients.find((item) => item.type === 'main')!;
 
-const mockTotal =
-  mockBun.price * 2 + mockFillings.reduce((sum, item) => sum + item.price, 0);
+  const mockFillings: TIngredient[] = [mockSauce, mockSauce, mockMain];
 
-export const BurgerConstructor = (): React.JSX.Element => {
+  const mockTotal =
+    mockBun.price * 2 + mockFillings.reduce((sum, item) => sum + item.price, 0);
+
   return (
     <section className={styles.burger_constructor}>
       <ConstructorElement
