@@ -4,6 +4,10 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
+import { useState } from 'react';
+
+import { Modal } from '@components/modal/modal';
+import { OrderDetails } from '@components/order-details/order-details';
 
 import type { TIngredient } from '@utils/types';
 
@@ -16,6 +20,8 @@ type TBurgerConstructorProps = {
 export const BurgerConstructor = ({
   ingredients,
 }: TBurgerConstructorProps): React.JSX.Element => {
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+
   const mockBun = ingredients.find((item) => item.type === 'bun')!;
   const mockSauce = ingredients.find((item) => item.type === 'sauce')!;
   const mockMain = ingredients.find((item) => item.type === 'main')!;
@@ -72,11 +78,24 @@ export const BurgerConstructor = ({
             <span className="text text_type_digits-medium">{mockTotal}</span>
             <CurrencyIcon type="primary" />
           </div>
-          <Button htmlType="button" type="primary" size="large">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={() => {
+              setIsOrderModalOpen(true);
+            }}
+          >
             Оформить заказ
           </Button>
         </div>
       </div>
+
+      {isOrderModalOpen && (
+        <Modal onClose={() => setIsOrderModalOpen(false)}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 };

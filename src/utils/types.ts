@@ -17,3 +17,11 @@ export type TIngredient = {
   image_mobile: string;
   __v: number;
 };
+
+export type TOrderResponse = {
+  success: boolean;
+  name: string;
+  order: {
+    number: number;
+  };
+};

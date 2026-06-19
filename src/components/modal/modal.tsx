@@ -15,6 +15,9 @@ type TModalProps = {
 };
 
 export const Modal = ({ title, onClose, children }: TModalProps): React.JSX.Element => {
+  const paddingClass = title ? 'pt-10 pl-10 pr-10 pb-15' : 'pt-15 pl-10 pr-10 pb-30';
+  const contentClass = title ? '' : 'pt-15';
+
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
@@ -32,12 +35,12 @@ export const Modal = ({ title, onClose, children }: TModalProps): React.JSX.Elem
   return createPortal(
     <>
       <ModalOverlay onClick={onClose} />
-      <div className={`${styles.modal} pt-10 pl-10 pr-10 pb-15`}>
-        <header className={styles.header}>
-          <h3 className="text text_type_main-large m-0">{title}</h3>
+      <div className={`${styles.modal} ${paddingClass}`}>
+        <header className={`${styles.header} ${!title ? styles.header_no_title : ''}`}>
+          {title && <h3 className="text text_type_main-large m-0">{title}</h3>}
           <CloseIcon type="primary" onClick={onClose} />
         </header>
-        <div>{children}</div>
+        <div className={contentClass}>{children}</div>
       </div>
     </>,
     modalRoot
