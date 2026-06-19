@@ -1,5 +1,5 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { IngredientCard } from '@components/ingredient-card/ingredient-card';
 import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
@@ -30,29 +30,28 @@ export const BurgerIngredients = ({
   );
   const sectionRefs = useRef<Partial<Record<TIngredientSectionType, HTMLElement>>>({});
 
-  const sections = INGREDIENT_SECTIONS.map(({ type, title }) => ({
-    id: type,
-    title,
-    items: ingredients.filter((item) => item.type === type),
-  }));
+  const sections = useMemo(
+    () =>
+      INGREDIENT_SECTIONS.map(({ type, title }) => ({
+        id: type,
+        title,
+        items: ingredients.filter((item) => item.type === type),
+      })),
+    [ingredients]
+  );
 
-  const handleCloseModal = (): void => {
+  const handleCloseModal = useCallback((): void => {
     setSelectedIngredient(null);
-  };
+  }, []);
 
-  const handleTabClick = (type: TIngredientSectionType): void => {
+  const handleTabClick = useCallback((type: TIngredientSectionType): void => {
     setActiveTab(type);
     sectionRefs.current[type]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  }, []);
 
-  const renderIngredientCard = (ingredient: TIngredient): React.JSX.Element => (
-    <IngredientCard
-      ingredient={ingredient}
-      onClick={() => {
-        setSelectedIngredient(ingredient);
-      }}
-    />
-  );
+  const handleIngredientClick = useCallback((ingredient: TIngredient): void => {
+    setSelectedIngredient(ingredient);
+  }, []);
 
   return (
     <section className={styles.burger_ingredients}>
@@ -86,7 +85,14 @@ export const BurgerIngredients = ({
             <h2 className="text text_type_main-medium m-0 mb-6">{title}</h2>
             <ul className={styles.cards_grid}>
               {items.map((ingredient) => (
-                <li key={ingredient._id}>{renderIngredientCard(ingredient)}</li>
+                <li key={ingredient._id}>
+                  <IngredientCard
+                    ingredient={ingredient}
+                    onClick={() => {
+                      handleIngredientClick(ingredient);
+                    }}
+                  />
+                </li>
               ))}
             </ul>
           </section>

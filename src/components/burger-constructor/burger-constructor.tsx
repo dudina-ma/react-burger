@@ -4,7 +4,7 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
@@ -22,14 +22,23 @@ export const BurgerConstructor = ({
 }: TBurgerConstructorProps): React.JSX.Element => {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
-  const mockBun = ingredients.find((item) => item.type === 'bun')!;
-  const mockSauce = ingredients.find((item) => item.type === 'sauce')!;
-  const mockMain = ingredients.find((item) => item.type === 'main')!;
+  const { mockBun, mockFillings, mockTotal } = useMemo(() => {
+    const bun = ingredients.find((item) => item.type === 'bun')!;
+    const sauce = ingredients.find((item) => item.type === 'sauce')!;
+    const main = ingredients.find((item) => item.type === 'main')!;
+    const fillings: TIngredient[] = [sauce, sauce, main];
+    const total = bun.price * 2 + fillings.reduce((sum, item) => sum + item.price, 0);
 
-  const mockFillings: TIngredient[] = [mockSauce, mockSauce, mockMain];
+    return { mockBun: bun, mockFillings: fillings, mockTotal: total };
+  }, [ingredients]);
 
-  const mockTotal =
-    mockBun.price * 2 + mockFillings.reduce((sum, item) => sum + item.price, 0);
+  const handleOpenOrderModal = useCallback((): void => {
+    setIsOrderModalOpen(true);
+  }, []);
+
+  const handleCloseOrderModal = useCallback((): void => {
+    setIsOrderModalOpen(false);
+  }, []);
 
   return (
     <section className={styles.burger_constructor}>
@@ -82,9 +91,7 @@ export const BurgerConstructor = ({
             htmlType="button"
             type="primary"
             size="large"
-            onClick={() => {
-              setIsOrderModalOpen(true);
-            }}
+            onClick={handleOpenOrderModal}
           >
             Оформить заказ
           </Button>
@@ -92,7 +99,7 @@ export const BurgerConstructor = ({
       </div>
 
       {isOrderModalOpen && (
-        <Modal onClose={() => setIsOrderModalOpen(false)}>
+        <Modal onClose={handleCloseOrderModal}>
           <OrderDetails />
         </Modal>
       )}
