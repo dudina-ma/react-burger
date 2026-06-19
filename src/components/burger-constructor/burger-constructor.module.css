@@ -77,4 +77,5 @@
   display: flex;
   align-items: center;
   gap: calc(var(--offset-base-size) * 2);
+  margin: 0;
 }

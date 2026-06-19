@@ -73,11 +73,11 @@ export const BurgerConstructor = ({
       </div>
 
       <div className={`${styles.row} ${styles.row_footer}`}>
-        <div className={styles.footer}>
-          <div className={styles.price}>
+        <footer className={styles.footer}>
+          <p className={styles.price}>
             <span className="text text_type_digits-medium">{mockTotal}</span>
             <CurrencyIcon type="primary" />
-          </div>
+          </p>
           <Button
             htmlType="button"
             type="primary"
@@ -88,7 +88,7 @@ export const BurgerConstructor = ({
           >
             Оформить заказ
           </Button>
-        </div>
+        </footer>
       </div>
 
       {isOrderModalOpen && (

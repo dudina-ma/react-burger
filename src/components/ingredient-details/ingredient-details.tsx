@@ -19,23 +19,23 @@ export const IngredientDetails = ({
   const { image_large, name } = ingredient;
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <img className={`${styles.image} mb-4`} src={image_large} alt={name} />
       <h3 className="text text_type_main-medium mb-8">{name}</h3>
-      <ul className={styles.nutrition}>
+      <dl className={styles.nutrition}>
         {NUTRITION_LABELS.map(({ key, label }) => (
-          <li key={key} className={styles.item}>
-            <p
+          <div key={key} className={styles.item}>
+            <dt
               className={`${styles.label} text text_type_main-default text_color_inactive`}
             >
               {label}
-            </p>
-            <p className={`${styles.value} text text_type_digits-default`}>
+            </dt>
+            <dd className={`${styles.value} text text_type_digits-default`}>
               {ingredient[key]}
-            </p>
-          </li>
+            </dd>
+          </div>
         ))}
-      </ul>
-    </div>
+      </dl>
+    </section>
   );
 };

@@ -24,10 +24,10 @@ export const IngredientCard = ({
     >
       {count > 0 && <Counter count={count} extraClass={styles.counter} />}
       <img className={styles.image} src={image} alt={name} />
-      <div className={`${styles.price} mb-1`}>
+      <p className={`${styles.price} mb-1`}>
         <span className="text text_type_digits-default">{price}</span>
         <CurrencyIcon type="primary" />
-      </div>
+      </p>
       <p className={`${styles.name} text text_type_main-default`}>{name}</p>
     </article>
   );

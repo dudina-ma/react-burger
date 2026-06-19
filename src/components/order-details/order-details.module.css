@@ -14,11 +14,6 @@
   height: 120px;
 }
 
-.glow {
-  position: absolute;
-  inset: 0;
-}
-
 .glow_layer {
   position: absolute;
   top: 50%;
