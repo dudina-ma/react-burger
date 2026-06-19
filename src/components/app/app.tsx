@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { BASE_URL } from '@utils/constants';
+import { request } from '@utils/api';
 
 import type { TIngredient, TIngredientsResponse } from '@utils/types';
 
@@ -16,21 +16,10 @@ export const App = (): React.JSX.Element => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchIngredients = async (): Promise<void> => {
+    const loadIngredients = async (): Promise<void> => {
       try {
-        const response = await fetch(`${BASE_URL}/api/ingredients`);
-
-        if (!response.ok) {
-          throw new Error(`Ошибка загрузки: ${response.status}`);
-        }
-
-        const data = (await response.json()) as TIngredientsResponse;
-
-        if (!data.success) {
-          throw new Error('Не удалось загрузить ингредиенты');
-        }
-
-        setIngredients(data.data);
+        const { data } = await request<TIngredientsResponse>('/api/ingredients');
+        setIngredients(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Произошла ошибка');
       } finally {
@@ -38,7 +27,7 @@ export const App = (): React.JSX.Element => {
       }
     };
 
-    void fetchIngredients();
+    void loadIngredients();
   }, []);
 
   if (isLoading) {
