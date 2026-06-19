@@ -3,6 +3,7 @@
   top: 50%;
   left: 50%;
   z-index: 2;
+  box-sizing: border-box;
   width: 720px;
   background-color: var(--background);
   border-radius: 40px;
@@ -13,8 +14,4 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.content {
-  padding: 0 calc(var(--offset-base-size) * 10) calc(var(--offset-base-size) * 10);
 }

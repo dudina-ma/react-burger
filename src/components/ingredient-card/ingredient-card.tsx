@@ -7,16 +7,21 @@ import styles from './ingredient-card.module.css';
 type TIngredientCardProps = {
   ingredient: TIngredient;
   count?: number;
+  onClick?: () => void;
 };
 
 export const IngredientCard = ({
   ingredient,
   count = 0,
+  onClick,
 }: TIngredientCardProps): React.JSX.Element => {
   const { image, name, price } = ingredient;
 
   return (
-    <article className={`${styles.card} pt-6 pl-4 pr-4 pb-4`}>
+    <article
+      className={`${styles.card} pt-6 pl-4 pr-4 pb-4${onClick ? ` ${styles.clickable}` : ''}`}
+      onClick={onClick}
+    >
       {count > 0 && <Counter count={count} extraClass={styles.counter} />}
       <img className={styles.image} src={image} alt={name} />
       <div className={`${styles.price} mb-1`}>

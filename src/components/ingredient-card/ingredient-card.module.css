@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .counter {
   position: absolute;
   top: 0;

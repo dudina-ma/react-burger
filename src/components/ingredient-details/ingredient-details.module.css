@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.image {
+  width: 480px;
+  height: 240px;
+  object-fit: contain;
+}
+
+.nutrition {
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--offset-base-size) * 5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--offset-base-size) * 2);
+}
+
+.label {
+  margin: 0;
+}
+
+.value {
+  margin: 0;
+}
