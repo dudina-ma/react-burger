@@ -1,5 +1,5 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { IngredientCard } from '@components/ingredient-card/ingredient-card';
 import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
@@ -15,6 +15,8 @@ const INGREDIENT_SECTIONS = [
   { type: 'main', title: 'Начинки' },
 ] as const;
 
+type TIngredientSectionType = (typeof INGREDIENT_SECTIONS)[number]['type'];
+
 type TBurgerIngredientsProps = {
   ingredients: TIngredient[];
 };
@@ -23,6 +25,10 @@ export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
   const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
+  const [activeTab, setActiveTab] = useState<TIngredientSectionType>(
+    INGREDIENT_SECTIONS[0].type
+  );
+  const sectionRefs = useRef<Partial<Record<TIngredientSectionType, HTMLElement>>>({});
 
   const sections = INGREDIENT_SECTIONS.map(({ type, title }) => ({
     id: type,
@@ -32,6 +38,11 @@ export const BurgerIngredients = ({
 
   const handleCloseModal = (): void => {
     setSelectedIngredient(null);
+  };
+
+  const handleTabClick = (type: TIngredientSectionType): void => {
+    setActiveTab(type);
+    sectionRefs.current[type]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const renderIngredientCard = (ingredient: TIngredient): React.JSX.Element => (
@@ -47,13 +58,13 @@ export const BurgerIngredients = ({
     <section className={styles.burger_ingredients}>
       <nav>
         <ul className={styles.menu}>
-          {INGREDIENT_SECTIONS.map(({ type, title }, index) => (
+          {INGREDIENT_SECTIONS.map(({ type, title }) => (
             <Tab
               key={type}
               value={type}
-              active={index === 0}
+              active={activeTab === type}
               onClick={() => {
-                /* TODO */
+                handleTabClick(type);
               }}
             >
               {title}
@@ -64,7 +75,14 @@ export const BurgerIngredients = ({
 
       <section className={`${styles.ingredients_list} custom-scroll`}>
         {sections.map(({ id, title, items }) => (
-          <section key={id} className={styles.ingredients_section} id={id}>
+          <section
+            key={id}
+            ref={(node) => {
+              sectionRefs.current[id] = node ?? undefined;
+            }}
+            className={styles.ingredients_section}
+            id={id}
+          >
             <h2 className="text text_type_main-medium m-0 mb-6">{title}</h2>
             <ul className={styles.cards_grid}>
               {items.map((ingredient) => (

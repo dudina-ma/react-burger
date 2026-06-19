@@ -26,6 +26,7 @@
   gap: calc(var(--offset-base-size) * 10);
   min-height: 0;
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .ingredients_section {
