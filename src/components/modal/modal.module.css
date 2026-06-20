@@ -1,0 +1,21 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  box-sizing: border-box;
+  width: 720px;
+  background-color: var(--background);
+  border-radius: 40px;
+  transform: translate(-50%, -50%);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header_no_title {
+  justify-content: flex-end;
+}

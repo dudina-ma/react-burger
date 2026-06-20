@@ -1,7 +1,81 @@
 .burger_constructor {
   display: flex;
   flex-direction: column;
+  gap: calc(var(--offset-base-size) * 4);
+  box-sizing: border-box;
   width: 600px;
-  padding-bottom: 20px;
+  height: 100%;
+  min-height: 0;
+  padding-bottom: calc(var(--offset-base-size) * 10);
   color: var(--text-primary-color);
+}
+
+.middle {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 4);
+  min-height: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: calc(var(--offset-base-size) * 10) minmax(0, 536px);
+  align-items: center;
+}
+
+.row_bun {
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: 100%;
+  min-width: 0;
+  max-width: 536px;
+  margin-left: calc(var(--offset-base-size) * 10);
+}
+
+.drag {
+  justify-self: center;
+}
+
+.element {
+  width: 100%;
+  min-width: 0;
+}
+
+.scroll_zone {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: calc(100% - 6rem);
+  overflow-y: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 4);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.row_footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: calc(var(--offset-base-size) * 6);
+}
+
+.footer {
+  display: flex;
+  grid-column: 2;
+  justify-content: flex-end;
+  align-items: center;
+  gap: calc(var(--offset-base-size) * 10);
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--offset-base-size) * 2);
+  margin: 0;
 }
