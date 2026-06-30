@@ -8,6 +8,9 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
+import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { createOrder } from '@services/order/actions';
+import { resetOrder } from '@services/order/slice';
 
 import type { TIngredient } from '@utils/types';
 
@@ -20,6 +23,10 @@ type TBurgerConstructorProps = {
 export const BurgerConstructor = ({
   ingredients,
 }: TBurgerConstructorProps): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const { isLoading: isOrderLoading, error: orderError } = useAppSelector(
+    (state) => state.order
+  );
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const { mockBun, mockFillings, mockTotal } = useMemo(() => {
@@ -32,13 +39,24 @@ export const BurgerConstructor = ({
     return { mockBun: bun, mockFillings: fillings, mockTotal: total };
   }, [ingredients]);
 
-  const handleOpenOrderModal = useCallback((): void => {
-    setIsOrderModalOpen(true);
-  }, []);
+  const handlePlaceOrder = useCallback((): void => {
+    const ingredientIds = [
+      mockBun._id,
+      ...mockFillings.map((item) => item._id),
+      mockBun._id,
+    ];
+
+    void dispatch(createOrder(ingredientIds)).then((result) => {
+      if (createOrder.fulfilled.match(result)) {
+        setIsOrderModalOpen(true);
+      }
+    });
+  }, [dispatch, mockBun, mockFillings]);
 
   const handleCloseOrderModal = useCallback((): void => {
     setIsOrderModalOpen(false);
-  }, []);
+    dispatch(resetOrder());
+  }, [dispatch]);
 
   return (
     <section className={styles.burger_constructor}>
@@ -91,11 +109,17 @@ export const BurgerConstructor = ({
             htmlType="button"
             type="primary"
             size="large"
-            onClick={handleOpenOrderModal}
+            onClick={handlePlaceOrder}
+            disabled={isOrderLoading}
           >
-            Оформить заказ
+            {isOrderLoading ? 'Подождите...' : 'Оформить заказ'}
           </Button>
         </footer>
+        {orderError && (
+          <p className="text text_type_main-default text_color_error mt-2">
+            {orderError}
+          </p>
+        )}
       </div>
 
       {isOrderModalOpen && (
