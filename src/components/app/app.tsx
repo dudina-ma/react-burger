@@ -1,34 +1,25 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { request } from '@utils/api';
-
-import type { TIngredient, TIngredientsResponse } from '@utils/types';
+import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
-  const [ingredients, setIngredients] = useState<TIngredient[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const {
+    items: ingredients,
+    isLoading,
+    error,
+  } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
-    const loadIngredients = async (): Promise<void> => {
-      try {
-        const { data } = await request<TIngredientsResponse>('/api/ingredients');
-        setIngredients(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Произошла ошибка');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    void loadIngredients();
-  }, []);
+    void dispatch(fetchIngredients());
+  }, [dispatch]);
 
   if (isLoading) {
     return <Preloader />;
