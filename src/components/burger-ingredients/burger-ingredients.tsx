@@ -4,6 +4,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IngredientCard } from '@components/ingredient-card/ingredient-card';
 import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
 import { Modal } from '@components/modal/modal';
+import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import {
+  clearCurrentIngredient,
+  setCurrentIngredient,
+} from '@services/current-ingredient/slice';
 
 import type { TIngredient } from '@utils/types';
 
@@ -24,7 +29,8 @@ type TBurgerIngredientsProps = {
 export const BurgerIngredients = ({
   ingredients,
 }: TBurgerIngredientsProps): React.JSX.Element => {
-  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
+  const dispatch = useAppDispatch();
+  const selectedIngredient = useAppSelector((state) => state.currentIngredient.item);
   const [activeTab, setActiveTab] = useState<TIngredientSectionType>(
     INGREDIENT_SECTIONS[0].type
   );
@@ -43,8 +49,8 @@ export const BurgerIngredients = ({
   );
 
   const handleCloseModal = useCallback((): void => {
-    setSelectedIngredient(null);
-  }, []);
+    dispatch(clearCurrentIngredient());
+  }, [dispatch]);
 
   const handleTabClick = useCallback((type: TIngredientSectionType): void => {
     setActiveTab(type);
@@ -94,9 +100,12 @@ export const BurgerIngredients = ({
     };
   }, [updateActiveTab, ingredients]);
 
-  const handleIngredientClick = useCallback((ingredient: TIngredient): void => {
-    setSelectedIngredient(ingredient);
-  }, []);
+  const handleIngredientClick = useCallback(
+    (ingredient: TIngredient): void => {
+      dispatch(setCurrentIngredient(ingredient));
+    },
+    [dispatch]
+  );
 
   return (
     <section className={styles.burger_ingredients}>
