@@ -22,14 +22,9 @@ const INGREDIENT_SECTIONS = [
 
 type TIngredientSectionType = (typeof INGREDIENT_SECTIONS)[number]['type'];
 
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
-};
-
-export const BurgerIngredients = ({
-  ingredients,
-}: TBurgerIngredientsProps): React.JSX.Element => {
+export const BurgerIngredients = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
+  const ingredients = useAppSelector((state) => state.ingredients.items);
   const selectedIngredient = useAppSelector((state) => state.currentIngredient.item);
   const [activeTab, setActiveTab] = useState<TIngredientSectionType>(
     INGREDIENT_SECTIONS[0].type

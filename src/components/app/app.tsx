@@ -13,11 +13,7 @@ import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
-  const {
-    items: ingredients,
-    isLoading,
-    error,
-  } = useAppSelector((state) => state.ingredients);
+  const { isLoading, error } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
     void dispatch(fetchIngredients());
@@ -39,7 +35,7 @@ export const App = (): React.JSX.Element => {
           Соберите бургер
         </h1>
         <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients />
           <BurgerConstructor />
         </main>
       </div>
