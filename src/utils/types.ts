@@ -18,6 +18,10 @@ export type TIngredient = {
   __v: number;
 };
 
+export type TConstructorIngredient = TIngredient & {
+  id: string;
+};
+
 export type TOrderResponse = {
   success: boolean;
   name: string;
