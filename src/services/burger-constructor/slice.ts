@@ -23,9 +23,13 @@ export const burgerConstructorSlice = createSlice({
     addConstructorIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
       state.ingredients.push(action.payload);
     },
+    removeConstructorIngredient: (state, action: PayloadAction<string>) => {
+      state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);
+    },
   },
 });
 
-export const { addBun, addConstructorIngredient } = burgerConstructorSlice.actions;
+export const { addBun, addConstructorIngredient, removeConstructorIngredient } =
+  burgerConstructorSlice.actions;
 
 export { addIngredient } from './actions';

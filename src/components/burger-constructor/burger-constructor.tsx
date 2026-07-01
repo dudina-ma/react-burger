@@ -10,7 +10,10 @@ import { useDrop } from 'react-dnd';
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
-import { addIngredient } from '@services/burger-constructor/slice';
+import {
+  addIngredient,
+  removeConstructorIngredient,
+} from '@services/burger-constructor/slice';
 import { createOrder } from '@services/order/actions';
 import { resetOrder } from '@services/order/slice';
 import { INGREDIENT_DRAG_TYPE } from '@utils/dnd';
@@ -154,7 +157,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
                   price={item.price}
                   extraClass={styles.element}
                   handleClose={() => {
-                    /* TODO */
+                    dispatch(removeConstructorIngredient(item.id));
                   }}
                 />
               </li>
