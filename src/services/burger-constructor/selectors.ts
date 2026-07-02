@@ -22,3 +22,13 @@ export const selectIngredientCounts = createSelector(
     return counts;
   }
 );
+
+export const selectBurgerTotalPrice = createSelector(
+  [selectBurgerConstructorState],
+  ({ bun, ingredients }) => {
+    const fillingsTotal = ingredients.reduce((sum, item) => sum + item.price, 0);
+    const bunTotal = bun ? bun.price * 2 : 0;
+
+    return bunTotal + fillingsTotal;
+  }
+);

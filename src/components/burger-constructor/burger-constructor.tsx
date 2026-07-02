@@ -4,12 +4,13 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { selectBurgerTotalPrice } from '@services/burger-constructor/selectors';
 import {
   addIngredient,
   moveConstructorIngredient,
@@ -173,18 +174,11 @@ const ConstructorIngredient = ({
 export const BurgerConstructor = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { bun, ingredients } = useAppSelector((state) => state.burgerConstructor);
+  const total = useAppSelector(selectBurgerTotalPrice);
   const { isLoading: isOrderLoading, error: orderError } = useAppSelector(
     (state) => state.order
   );
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-
-  const total = useMemo(() => {
-    if (!bun) {
-      return 0;
-    }
-
-    return bun.price * 2 + ingredients.reduce((sum, item) => sum + item.price, 0);
-  }, [bun, ingredients]);
 
   const handlePlaceOrder = useCallback((): void => {
     if (!bun) {
