@@ -5,21 +5,22 @@ import {
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { useDrop } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import {
   addIngredient,
+  moveConstructorIngredient,
   removeConstructorIngredient,
 } from '@services/burger-constructor/slice';
 import { createOrder } from '@services/order/actions';
 import { resetOrder } from '@services/order/slice';
-import { INGREDIENT_DRAG_TYPE } from '@utils/dnd';
+import { CONSTRUCTOR_INGREDIENT_DRAG_TYPE, INGREDIENT_DRAG_TYPE } from '@utils/dnd';
 
-import type { TIngredientDragItem } from '@utils/dnd';
-import type { TIngredient } from '@utils/types';
+import type { TConstructorIngredientDragItem, TIngredientDragItem } from '@utils/dnd';
+import type { TConstructorIngredient, TIngredient } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
@@ -87,6 +88,88 @@ const ConstructorDropSlot = ({
   );
 };
 
+type TConstructorIngredientProps = {
+  item: TConstructorIngredient;
+  index: number;
+  moveIngredient: (dragIndex: number, hoverIndex: number) => void;
+  onRemove: (id: string) => void;
+};
+
+const ConstructorIngredient = ({
+  item,
+  index,
+  moveIngredient,
+  onRemove,
+}: TConstructorIngredientProps): React.JSX.Element => {
+  const ref = useRef<HTMLLIElement>(null);
+
+  const [{ isDragging }, drag] = useDrag<
+    TConstructorIngredientDragItem,
+    void,
+    { isDragging: boolean }
+  >({
+    type: CONSTRUCTOR_INGREDIENT_DRAG_TYPE,
+    item: { id: item.id, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [, drop] = useDrop<TConstructorIngredientDragItem, void, Record<string, never>>({
+    accept: CONSTRUCTOR_INGREDIENT_DRAG_TYPE,
+    hover(dragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+
+      const dragIndex = dragItem.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+
+      if (!clientOffset) {
+        return;
+      }
+
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      moveIngredient(dragIndex, hoverIndex);
+      dragItem.index = hoverIndex;
+    },
+  });
+
+  drag(drop(ref));
+
+  return (
+    <li ref={ref} className={styles.row} style={{ opacity: isDragging ? 0.5 : 1 }}>
+      <DragIcon type="primary" className={styles.drag} />
+      <ConstructorElement
+        text={item.name}
+        thumbnail={item.image}
+        price={item.price}
+        extraClass={styles.element}
+        handleClose={() => {
+          onRemove(item.id);
+        }}
+      />
+    </li>
+  );
+};
+
 export const BurgerConstructor = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { bun, ingredients } = useAppSelector((state) => state.burgerConstructor);
@@ -122,6 +205,20 @@ export const BurgerConstructor = (): React.JSX.Element => {
     dispatch(resetOrder());
   }, [dispatch]);
 
+  const handleMoveIngredient = useCallback(
+    (dragIndex: number, hoverIndex: number): void => {
+      dispatch(moveConstructorIngredient({ dragIndex, hoverIndex }));
+    },
+    [dispatch]
+  );
+
+  const handleRemoveIngredient = useCallback(
+    (id: string): void => {
+      dispatch(removeConstructorIngredient(id));
+    },
+    [dispatch]
+  );
+
   return (
     <section className={styles.burger_constructor}>
       <ConstructorDropSlot
@@ -148,19 +245,14 @@ export const BurgerConstructor = (): React.JSX.Element => {
       >
         {ingredients.length > 0 ? (
           <ul className={styles.list}>
-            {ingredients.map((item) => (
-              <li key={item.id} className={styles.row}>
-                <DragIcon type="primary" className={styles.drag} />
-                <ConstructorElement
-                  text={item.name}
-                  thumbnail={item.image}
-                  price={item.price}
-                  extraClass={styles.element}
-                  handleClose={() => {
-                    dispatch(removeConstructorIngredient(item.id));
-                  }}
-                />
-              </li>
+            {ingredients.map((item, index) => (
+              <ConstructorIngredient
+                key={item.id}
+                item={item}
+                index={index}
+                moveIngredient={handleMoveIngredient}
+                onRemove={handleRemoveIngredient}
+              />
             ))}
           </ul>
         ) : (

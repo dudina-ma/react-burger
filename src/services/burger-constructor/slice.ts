@@ -26,10 +26,21 @@ export const burgerConstructorSlice = createSlice({
     removeConstructorIngredient: (state, action: PayloadAction<string>) => {
       state.ingredients = state.ingredients.filter((item) => item.id !== action.payload);
     },
+    moveConstructorIngredient: (
+      state,
+      action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
+    ) => {
+      const { dragIndex, hoverIndex } = action.payload;
+      state.ingredients.splice(hoverIndex, 0, state.ingredients.splice(dragIndex, 1)[0]);
+    },
   },
 });
 
-export const { addBun, addConstructorIngredient, removeConstructorIngredient } =
-  burgerConstructorSlice.actions;
+export const {
+  addBun,
+  addConstructorIngredient,
+  removeConstructorIngredient,
+  moveConstructorIngredient,
+} = burgerConstructorSlice.actions;
 
 export { addIngredient } from './actions';
