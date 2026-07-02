@@ -5,6 +5,7 @@ import { IngredientCard } from '@components/ingredient-card/ingredient-card';
 import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
 import { Modal } from '@components/modal/modal';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { selectIngredientCounts } from '@services/burger-constructor/selectors';
 import {
   clearCurrentIngredient,
   setCurrentIngredient,
@@ -25,6 +26,7 @@ type TIngredientSectionType = (typeof INGREDIENT_SECTIONS)[number]['type'];
 export const BurgerIngredients = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const ingredients = useAppSelector((state) => state.ingredients.items);
+  const ingredientCounts = useAppSelector(selectIngredientCounts);
   const selectedIngredient = useAppSelector((state) => state.currentIngredient.item);
   const [activeTab, setActiveTab] = useState<TIngredientSectionType>(
     INGREDIENT_SECTIONS[0].type
@@ -144,6 +146,7 @@ export const BurgerIngredients = (): React.JSX.Element => {
                 <li key={ingredient._id}>
                   <IngredientCard
                     ingredient={ingredient}
+                    count={ingredientCounts[ingredient._id]}
                     onClick={() => {
                       handleIngredientClick(ingredient);
                     }}
