@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { selectBurgerTotalPrice } from '@services/burger-constructor/selectors';
 import {
   addIngredient,
+  clearConstructor,
   moveConstructorIngredient,
   removeConstructorIngredient,
 } from '@services/burger-constructor/slice';
@@ -189,6 +190,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
 
     void dispatch(createOrder(ingredientIds)).then((result) => {
       if (createOrder.fulfilled.match(result)) {
+        dispatch(clearConstructor());
         setIsOrderModalOpen(true);
       }
     });
