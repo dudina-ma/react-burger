@@ -1,15 +1,10 @@
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { IngredientCard } from '@components/ingredient-card/ingredient-card';
-import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
-import { Modal } from '@components/modal/modal';
-import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { useAppSelector } from '@hooks/use-redux-hooks';
 import { selectIngredientCounts } from '@services/burger-constructor/selectors';
-import {
-  clearCurrentIngredient,
-  setCurrentIngredient,
-} from '@services/current-ingredient/slice';
 
 import type { TIngredient } from '@utils/types';
 
@@ -24,10 +19,9 @@ const INGREDIENT_SECTIONS = [
 type TIngredientSectionType = (typeof INGREDIENT_SECTIONS)[number]['type'];
 
 export const BurgerIngredients = (): React.JSX.Element => {
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const ingredients = useAppSelector((state) => state.ingredients.items);
   const ingredientCounts = useAppSelector(selectIngredientCounts);
-  const selectedIngredient = useAppSelector((state) => state.currentIngredient.item);
   const [activeTab, setActiveTab] = useState<TIngredientSectionType>(
     INGREDIENT_SECTIONS[0].type
   );
@@ -44,10 +38,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
       })),
     [ingredients]
   );
-
-  const handleCloseModal = useCallback((): void => {
-    dispatch(clearCurrentIngredient());
-  }, [dispatch]);
 
   const handleTabClick = useCallback((type: TIngredientSectionType): void => {
     setActiveTab(type);
@@ -99,9 +89,9 @@ export const BurgerIngredients = (): React.JSX.Element => {
 
   const handleIngredientClick = useCallback(
     (ingredient: TIngredient): void => {
-      dispatch(setCurrentIngredient(ingredient));
+      void navigate(`/ingredients/${ingredient._id}`);
     },
-    [dispatch]
+    [navigate]
   );
 
   return (
@@ -157,12 +147,6 @@ export const BurgerIngredients = (): React.JSX.Element => {
           </section>
         ))}
       </section>
-
-      {selectedIngredient && (
-        <Modal title="Детали ингредиента" onClose={handleCloseModal}>
-          <IngredientDetails ingredient={selectedIngredient} />
-        </Modal>
-      )}
     </section>
   );
 };

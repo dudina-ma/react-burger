@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { AppHeader } from '@components/app-header/app-header';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { Home } from '@pages/home/home';
+import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
 import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
+  },
+  {
+    path: 'ingredients/:id',
+    element: <IngredientDetails />,
   },
 ]);
 
