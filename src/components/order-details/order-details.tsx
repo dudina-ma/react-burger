@@ -1,20 +1,17 @@
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
+import { useAppSelector } from '@hooks/use-redux-hooks';
 import { ORDER_DETAILS_TEXTS } from '@utils/order-details.constants';
-import { MOCK_ORDER_NUMBER } from '@utils/order-mock';
 
 import styles from './order-details.module.css';
 
-type TOrderDetailsProps = {
-  orderNumber?: string;
-};
-
-export const OrderDetails = ({
-  orderNumber = MOCK_ORDER_NUMBER,
-}: TOrderDetailsProps): React.JSX.Element => {
+export const OrderDetails = (): React.JSX.Element => {
+  const orderNumber = useAppSelector((state) => state.order.orderNumber);
   return (
     <section className={styles.container}>
-      <p className="text text_type_digits-large mb-8">{orderNumber}</p>
+      <p className="text text_type_digits-large mb-8">
+        {orderNumber?.toString().padStart(6, '0')}
+      </p>
       <p className="text text_type_main-medium mb-15">
         {ORDER_DETAILS_TEXTS.identifierLabel}
       </p>

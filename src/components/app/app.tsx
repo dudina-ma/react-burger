@@ -1,34 +1,23 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { request } from '@utils/api';
-
-import type { TIngredient, TIngredientsResponse } from '@utils/types';
+import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
 
 export const App = (): React.JSX.Element => {
-  const [ingredients, setIngredients] = useState<TIngredient[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
-    const loadIngredients = async (): Promise<void> => {
-      try {
-        const { data } = await request<TIngredientsResponse>('/api/ingredients');
-        setIngredients(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Произошла ошибка');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    void loadIngredients();
-  }, []);
+    void dispatch(fetchIngredients());
+  }, [dispatch]);
 
   if (isLoading) {
     return <Preloader />;
@@ -39,16 +28,18 @@ export const App = (): React.JSX.Element => {
   }
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
-      <main className={`${styles.main} pl-5 pr-5`}>
-        <BurgerIngredients ingredients={ingredients} />
-        <BurgerConstructor ingredients={ingredients} />
-      </main>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className={styles.app}>
+        <AppHeader />
+        <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+          Соберите бургер
+        </h1>
+        <main className={`${styles.main} pl-5 pr-5`}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </main>
+      </div>
+    </DndProvider>
   );
 };
 
