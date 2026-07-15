@@ -4,10 +4,12 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
 import { Home } from '@pages/home/home';
 import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
 import { LoginPage } from '@pages/login/login';
 import { RegisterPage } from '@pages/register/register';
+import { ResetPasswordPage } from '@pages/reset-password/reset-password';
 import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
   {
     path: 'register',
     element: <RegisterPage />,
+  },
+  {
+    path: 'forgot-password',
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: 'reset-password',
+    element: <ResetPasswordPage />,
   },
 ]);
 
