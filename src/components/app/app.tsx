@@ -8,6 +8,9 @@ import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
 import { Home } from '@pages/home/home';
 import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
 import { LoginPage } from '@pages/login/login';
+import { ProfilePage } from '@pages/profile/profile';
+import { ProfileLayout } from '@pages/profile/profile-layout';
+import { ProfileOrderPage } from '@pages/profile/profile-orders';
 import { RegisterPage } from '@pages/register/register';
 import { ResetPasswordPage } from '@pages/reset-password/reset-password';
 import { fetchIngredients } from '@services/ingredients/actions';
@@ -38,6 +41,20 @@ const router = createBrowserRouter([
   {
     path: 'reset-password',
     element: <ResetPasswordPage />,
+  },
+  {
+    path: 'profile',
+    element: <ProfileLayout />,
+    children: [
+      {
+        index: true,
+        element: <ProfilePage />,
+      },
+      {
+        path: 'orders',
+        element: <ProfileOrderPage />,
+      },
+    ],
   },
 ]);
 
