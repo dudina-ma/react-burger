@@ -1,6 +1,6 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
@@ -19,52 +19,64 @@ import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
 
+const AppLayout = (): React.JSX.Element => (
+  <div className={styles.app}>
+    <AppHeader />
+    <Outlet />
+  </div>
+);
+
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Home />,
-  },
-  {
-    path: 'ingredients/:id',
-    element: <IngredientDetails />,
-  },
-  {
-    path: 'login',
-    element: <LoginPage />,
-  },
-  {
-    path: 'register',
-    element: <RegisterPage />,
-  },
-  {
-    path: 'forgot-password',
-    element: <ForgotPasswordPage />,
-  },
-  {
-    path: 'reset-password',
-    element: <ResetPasswordPage />,
-  },
-  {
-    path: 'feed',
-    element: <FeedPage />,
-  },
-  {
-    path: 'profile',
-    element: <ProfileLayout />,
+    element: <AppLayout />,
     children: [
       {
-        index: true,
-        element: <ProfilePage />,
+        path: '/',
+        element: <Home />,
       },
       {
-        path: 'orders',
-        element: <ProfileOrderPage />,
+        path: 'ingredients/:id',
+        element: <IngredientDetails />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: 'feed',
+        element: <FeedPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProfileLayout />,
+        children: [
+          {
+            index: true,
+            element: <ProfilePage />,
+          },
+          {
+            path: 'orders',
+            element: <ProfileOrderPage />,
+          },
+        ],
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
-  },
-  {
-    path: '*',
-    element: <NotFoundPage />,
   },
 ]);
 
@@ -84,12 +96,7 @@ export const App = (): React.JSX.Element => {
     return <p className={`${styles.error} text text_type_main-default`}>{error}</p>;
   }
 
-  return (
-    <div className={styles.app}>
-      <AppHeader />
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
