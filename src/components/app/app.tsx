@@ -4,10 +4,12 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { FeedPage } from '@pages/feed/feed';
 import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
 import { Home } from '@pages/home/home';
 import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
 import { LoginPage } from '@pages/login/login';
+import { NotFoundPage } from '@pages/not-found/not-found';
 import { ProfilePage } from '@pages/profile/profile';
 import { ProfileLayout } from '@pages/profile/profile-layout';
 import { ProfileOrderPage } from '@pages/profile/profile-orders';
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
     element: <ResetPasswordPage />,
   },
   {
+    path: 'feed',
+    element: <FeedPage />,
+  },
+  {
     path: 'profile',
     element: <ProfileLayout />,
     children: [
@@ -55,6 +61,10 @@ const router = createBrowserRouter([
         element: <ProfileOrderPage />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ]);
 
