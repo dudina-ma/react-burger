@@ -6,6 +6,8 @@ import { AppHeader } from '@components/app-header/app-header';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { Home } from '@pages/home/home';
 import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
+import { LoginPage } from '@pages/login/login';
+import { RegisterPage } from '@pages/register/register';
 import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
   {
     path: 'ingredients/:id',
     element: <IngredientDetails />,
+  },
+  {
+    path: 'login',
+    element: <LoginPage />,
+  },
+  {
+    path: 'register',
+    element: <RegisterPage />,
   },
 ]);
 
