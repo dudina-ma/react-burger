@@ -1,5 +1,8 @@
 import { NavLink, Outlet, matchPath, useLocation } from 'react-router-dom';
 
+import { useAppDispatch } from '@hooks/use-redux-hooks';
+import { logoutUser } from '@services/auth/actions';
+
 import styles from './profile.module.css';
 
 type ProfileNavItem = {
@@ -30,8 +33,13 @@ const getActiveNavItem = (pathname: string): ProfileNavItem =>
   PROFILE_NAV[0];
 
 export const ProfileLayout = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const { description } = getActiveNavItem(pathname);
+
+  const handleLogout = (): void => {
+    void dispatch(logoutUser());
+  };
 
   return (
     <div className={`${styles.page} pt-30 pl-5 pr-5`}>
@@ -52,6 +60,7 @@ export const ProfileLayout = (): React.JSX.Element => {
           <button
             type="button"
             className={`${styles.link} text text_type_main-medium text_color_inactive`}
+            onClick={handleLogout}
           >
             Выход
           </button>

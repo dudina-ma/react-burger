@@ -56,3 +56,8 @@ export type TRefreshResponse = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type TLogoutResponse = {
+  success: boolean;
+  message: string;
+};

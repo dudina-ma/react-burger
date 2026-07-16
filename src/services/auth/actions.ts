@@ -1,9 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { request } from '@utils/api';
-import { setTokens } from '@utils/token';
+import { clearTokens, getRefreshToken, setTokens } from '@utils/token';
 
-import type { TAuthResponse, TLoginRequest, TRegisterRequest } from '@utils/types';
+import type {
+  TAuthResponse,
+  TLoginRequest,
+  TLogoutResponse,
+  TRegisterRequest,
+} from '@utils/types';
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
@@ -38,3 +43,24 @@ export const loginUser = createAsyncThunk(
     return response;
   }
 );
+
+export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+  const token = getRefreshToken();
+
+  if (!token) {
+    clearTokens();
+    return { success: true, message: 'Successful logout' } satisfies TLogoutResponse;
+  }
+
+  const response = await request<TLogoutResponse>('/api/auth/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  clearTokens();
+
+  return response;
+});
