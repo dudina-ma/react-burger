@@ -50,3 +50,9 @@ export type TAuthResponse = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type TRefreshResponse = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
