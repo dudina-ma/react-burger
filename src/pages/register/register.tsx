@@ -7,14 +7,19 @@ import {
 import { useState } from 'react';
 
 import { AuthForm, AuthLink } from '@components/auth-form/auth-form';
+import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { registerUser } from '@services/auth/actions';
 
 export const RegisterPage = (): React.JSX.Element => {
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.auth);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    void dispatch(registerUser({ name, email, password }));
   };
 
   return (
@@ -49,7 +54,16 @@ export const RegisterPage = (): React.JSX.Element => {
         onChange={(e) => setPassword(e.target.value)}
         extraClass="mt-6"
       />
-      <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6">
+      {error && (
+        <p className="text text_type_main-default text_color_error mt-6">{error}</p>
+      )}
+      <Button
+        htmlType="submit"
+        type="primary"
+        size="medium"
+        extraClass="mt-6"
+        disabled={isLoading}
+      >
         Зарегистрироваться
       </Button>
     </AuthForm>
