@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { loginUser, logoutUser, registerUser } from './actions';
+import {
+  forgotPassword,
+  loginUser,
+  logoutUser,
+  registerUser,
+  resetPassword,
+} from './actions';
 
 type TAuthState = {
   user: {
@@ -58,6 +64,28 @@ export const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message ?? 'Не удалось выйти';
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'Не удалось отправить письмо';
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'Не удалось сбросить пароль';
       });
   },
 });

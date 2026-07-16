@@ -61,3 +61,17 @@ export type TLogoutResponse = {
   success: boolean;
   message: string;
 };
+
+export type TPasswordResetRequest = {
+  email: string;
+};
+
+export type TResetPasswordRequest = {
+  password: string;
+  token: string;
+};
+
+export type TPasswordResetResponse = {
+  success: boolean;
+  message: string;
+};

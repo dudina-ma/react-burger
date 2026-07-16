@@ -1,13 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { request } from '@utils/api';
+import { allowPasswordReset, clearPasswordResetAllowed } from '@utils/password-reset';
 import { clearTokens, getRefreshToken, setTokens } from '@utils/token';
 
 import type {
   TAuthResponse,
   TLoginRequest,
   TLogoutResponse,
+  TPasswordResetRequest,
+  TPasswordResetResponse,
   TRegisterRequest,
+  TResetPasswordRequest,
 } from '@utils/types';
 
 export const registerUser = createAsyncThunk(
@@ -39,6 +43,40 @@ export const loginUser = createAsyncThunk(
     });
 
     setTokens(response.accessToken, response.refreshToken);
+
+    return response;
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  'auth/forgotPassword',
+  async ({ email }: TPasswordResetRequest) => {
+    const response = await request<TPasswordResetResponse>('/api/password-reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    allowPasswordReset();
+
+    return response;
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async ({ password, token }: TResetPasswordRequest) => {
+    const response = await request<TPasswordResetResponse>('/api/password-reset/reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password, token }),
+    });
+
+    clearPasswordResetAllowed();
 
     return response;
   }
