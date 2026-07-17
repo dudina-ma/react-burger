@@ -9,6 +9,8 @@ export const setTokens = (accessToken: string, refreshToken: string): void => {
 export const getAccessToken = (): string | null =>
   localStorage.getItem(ACCESS_TOKEN_KEY);
 
+export const isTokenExists = (): boolean => getAccessToken() !== null;
+
 export const getRefreshToken = (): string | null =>
   localStorage.getItem(REFRESH_TOKEN_KEY);
 

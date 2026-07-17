@@ -8,17 +8,21 @@ import {
   resetPassword,
 } from './actions';
 
+import type { PayloadAction } from '@reduxjs/toolkit';
+
 type TAuthState = {
   user: {
     email: string;
     name: string;
   } | null;
+  isAuthChecked: boolean;
   isLoading: boolean;
   error: string | null;
 };
 
 const initialState: TAuthState = {
   user: null,
+  isAuthChecked: false,
   isLoading: false,
   error: null,
 };
@@ -26,7 +30,24 @@ const initialState: TAuthState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
+      state.isAuthChecked = action.payload;
+    },
+    setUser: (
+      state,
+      action: PayloadAction<{
+        email: string;
+        name: string;
+      } | null>
+    ) => {
+      state.user = action.payload;
+    },
+  },
+  selectors: {
+    selectIsAuthChecked: (state) => state.isAuthChecked,
+    selectUser: (state) => state.user,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -36,6 +57,7 @@ export const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
+        state.isAuthChecked = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -48,6 +70,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
+        state.isAuthChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -89,3 +112,7 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const { setIsAuthChecked, setUser } = authSlice.actions;
+
+export const { selectIsAuthChecked, selectUser } = authSlice.selectors;

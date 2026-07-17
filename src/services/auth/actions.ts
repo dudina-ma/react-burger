@@ -1,8 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { request } from '@utils/api';
+import { request, requestWithAuth } from '@utils/api';
 import { allowPasswordReset, clearPasswordResetAllowed } from '@utils/password-reset';
-import { clearTokens, getRefreshToken, setTokens } from '@utils/token';
+import { clearTokens, getRefreshToken, isTokenExists, setTokens } from '@utils/token';
+
+import { setIsAuthChecked, setUser } from './slice';
 
 import type {
   TAuthResponse,
@@ -12,6 +14,7 @@ import type {
   TPasswordResetResponse,
   TRegisterRequest,
   TResetPasswordRequest,
+  TUserResponse,
 } from '@utils/types';
 
 export const registerUser = createAsyncThunk(
@@ -79,6 +82,20 @@ export const resetPassword = createAsyncThunk(
     clearPasswordResetAllowed();
 
     return response;
+  }
+);
+
+export const checkUserAuth = createAsyncThunk(
+  'auth/checkUserAuth',
+  async (_, { dispatch }) => {
+    try {
+      if (isTokenExists()) {
+        const response = await requestWithAuth<TUserResponse>('/api/auth/user');
+        dispatch(setUser(response.user));
+      }
+    } finally {
+      dispatch(setIsAuthChecked(true));
+    }
   }
 );
 

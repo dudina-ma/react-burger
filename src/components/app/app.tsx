@@ -15,6 +15,7 @@ import { ProfileLayout } from '@pages/profile/profile-layout';
 import { ProfileOrderPage } from '@pages/profile/profile-orders';
 import { RegisterPage } from '@pages/register/register';
 import { ResetPasswordPage } from '@pages/reset-password/reset-password';
+import { checkUserAuth } from '@services/auth/actions';
 import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
@@ -85,6 +86,7 @@ export const App = (): React.JSX.Element => {
   const { isLoading, error } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
+    void dispatch(checkUserAuth());
     void dispatch(fetchIngredients());
   }, [dispatch]);
 
