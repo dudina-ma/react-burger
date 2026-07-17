@@ -14,6 +14,7 @@ import type {
   TPasswordResetResponse,
   TRegisterRequest,
   TResetPasswordRequest,
+  TUpdateUserRequest,
   TUserResponse,
 } from '@utils/types';
 
@@ -97,6 +98,18 @@ export const checkUserAuth = createAsyncThunk(
       dispatch(setIsAuthChecked(true));
     }
   }
+);
+
+export const updateUser = createAsyncThunk(
+  'auth/updateUser',
+  async ({ name, email, password }: TUpdateUserRequest) =>
+    requestWithAuth<TUserResponse>('/api/auth/user', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    })
 );
 
 export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {

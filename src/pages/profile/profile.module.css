@@ -44,6 +44,12 @@
   max-width: 480px;
 }
 
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
 .stub {
   margin: 0;
 }

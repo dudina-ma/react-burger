@@ -41,6 +41,12 @@ export type TLoginRequest = {
   password: string;
 };
 
+export type TUpdateUserRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export type TAuthResponse = {
   success: boolean;
   user: {

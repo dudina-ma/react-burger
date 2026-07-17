@@ -6,6 +6,7 @@ import {
   logoutUser,
   registerUser,
   resetPassword,
+  updateUser,
 } from './actions';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -109,6 +110,18 @@ export const authSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message ?? 'Не удалось сбросить пароль';
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'Не удалось обновить профиль';
       });
   },
 });
