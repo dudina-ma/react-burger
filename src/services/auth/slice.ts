@@ -10,12 +10,10 @@ import {
 } from './actions';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
+import type { TUser } from '@utils/types';
 
 type TAuthState = {
-  user: {
-    email: string;
-    name: string;
-  } | null;
+  user: TUser | null;
   isAuthChecked: boolean;
   isLoading: boolean;
   error: string | null;
@@ -35,13 +33,7 @@ export const authSlice = createSlice({
     setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
       state.isAuthChecked = action.payload;
     },
-    setUser: (
-      state,
-      action: PayloadAction<{
-        email: string;
-        name: string;
-      } | null>
-    ) => {
+    setUser: (state, action: PayloadAction<TUser | null>) => {
       state.user = action.payload;
     },
   },

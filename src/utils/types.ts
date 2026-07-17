@@ -30,62 +30,43 @@ export type TOrderResponse = {
   };
 };
 
-export type TRegisterRequest = {
+export type TUser = {
   email: string;
-  password: string;
   name: string;
 };
 
-export type TLoginRequest = {
-  email: string;
+export type TRegisterRequest = TUser & {
   password: string;
 };
 
-export type TUpdateUserRequest = {
-  name: string;
-  email: string;
-  password: string;
-};
+export type TLoginRequest = Pick<TRegisterRequest, 'email' | 'password'>;
+
+export type TUpdateUserRequest = TRegisterRequest;
 
 export type TAuthResponse = {
   success: boolean;
-  user: {
-    email: string;
-    name: string;
-  };
+  user: TUser;
   accessToken: string;
   refreshToken: string;
 };
 
-export type TUserResponse = {
-  success: boolean;
-  user: {
-    email: string;
-    name: string;
-  };
-};
+export type TUserResponse = Pick<TAuthResponse, 'success' | 'user'>;
 
-export type TRefreshResponse = {
-  success: boolean;
-  accessToken: string;
-  refreshToken: string;
-};
+export type TRefreshResponse = Pick<
+  TAuthResponse,
+  'success' | 'accessToken' | 'refreshToken'
+>;
 
 export type TLogoutResponse = {
   success: boolean;
   message: string;
 };
 
-export type TPasswordResetRequest = {
-  email: string;
-};
+export type TPasswordResetRequest = Pick<TUser, 'email'>;
 
 export type TResetPasswordRequest = {
   password: string;
   token: string;
 };
 
-export type TPasswordResetResponse = {
-  success: boolean;
-  message: string;
-};
+export type TPasswordResetResponse = TLogoutResponse;
