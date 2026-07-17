@@ -3,10 +3,10 @@ import {
   Input,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { AuthForm, AuthLink } from '@components/auth-form/auth-form';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { resetPassword } from '@services/auth/actions';
 import { isPasswordResetAllowed } from '@utils/password-reset';
@@ -15,8 +15,7 @@ export const ResetPasswordPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useAppSelector((state) => state.auth);
-  const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
+  const { values, handleChange } = useForm({ password: '', token: '' });
 
   if (!isPasswordResetAllowed()) {
     return <Navigate to="/forgot-password" replace />;
@@ -25,7 +24,7 @@ export const ResetPasswordPage = (): React.JSX.Element => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    void dispatch(resetPassword({ password, token }))
+    void dispatch(resetPassword({ password: values.password, token: values.token }))
       .unwrap()
       .then(() => {
         void navigate('/login');
@@ -45,17 +44,17 @@ export const ResetPasswordPage = (): React.JSX.Element => {
     >
       <PasswordInput
         name="password"
-        value={password}
+        value={values.password}
         placeholder="Введите новый пароль"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       <Input
         type="text"
         name="token"
-        value={token}
+        value={values.token}
         placeholder="Введите код из письма"
-        onChange={(e) => setToken(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       {error && (

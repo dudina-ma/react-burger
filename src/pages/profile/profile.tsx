@@ -1,6 +1,7 @@
 import { Button, Input } from '@krgaa/react-developer-burger-ui-components';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { updateUser } from '@services/auth/actions';
 import { selectUser } from '@services/auth/slice';
@@ -11,26 +12,27 @@ export const ProfilePage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const { isLoading, error } = useAppSelector((state) => state.auth);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange, setValues } = useForm({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
-      setEmail(user.email);
-      setPassword('');
+      setValues({ name: user.name, email: user.email, password: '' });
     }
-  }, [user]);
+  }, [user, setValues]);
 
   const isChanged =
-    Boolean(user) && (name !== user?.name || email !== user?.email || password !== '');
+    Boolean(user) &&
+    (values.name !== user?.name ||
+      values.email !== user?.email ||
+      values.password !== '');
 
   const handleReset = (): void => {
     if (user) {
-      setName(user.name);
-      setEmail(user.email);
-      setPassword('');
+      setValues({ name: user.name, email: user.email, password: '' });
     }
   };
 
@@ -41,9 +43,11 @@ export const ProfilePage = (): React.JSX.Element => {
       return;
     }
 
-    void dispatch(updateUser({ name, email, password }))
+    void dispatch(
+      updateUser({ name: values.name, email: values.email, password: values.password })
+    )
       .unwrap()
-      .then(() => setPassword(''));
+      .then(() => setValues((prev) => ({ ...prev, password: '' })));
   };
 
   return (
@@ -51,29 +55,29 @@ export const ProfilePage = (): React.JSX.Element => {
       <Input
         type="text"
         name="name"
-        value={name}
+        value={values.name}
         placeholder="Имя"
         icon="EditIcon"
-        onChange={(e) => setName(e.target.value)}
+        onChange={handleChange}
         onIconClick={() => undefined}
       />
       <Input
         type="text"
         name="email"
-        value={email}
+        value={values.email}
         placeholder="Логин"
         icon="EditIcon"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleChange}
         onIconClick={() => undefined}
         extraClass="mt-6"
       />
       <Input
         type="password"
         name="password"
-        value={password}
+        value={values.password}
         placeholder="Пароль"
         icon="EditIcon"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handleChange}
         onIconClick={() => undefined}
         extraClass="mt-6"
       />

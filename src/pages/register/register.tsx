@@ -4,22 +4,22 @@ import {
   Input,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
 
 import { AuthForm, AuthLink } from '@components/auth-form/auth-form';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { registerUser } from '@services/auth/actions';
 
 export const RegisterPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({ name: '', email: '', password: '' });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    void dispatch(registerUser({ name, email, password }));
+    void dispatch(
+      registerUser({ name: values.name, email: values.email, password: values.password })
+    );
   };
 
   return (
@@ -35,23 +35,23 @@ export const RegisterPage = (): React.JSX.Element => {
       <Input
         type="text"
         name="name"
-        value={name}
+        value={values.name}
         placeholder="Имя"
-        onChange={(e) => setName(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       <EmailInput
         name="email"
-        value={email}
+        value={values.email}
         placeholder="E-mail"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       <PasswordInput
         name="password"
-        value={password}
+        value={values.password}
         placeholder="Пароль"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       {error && (

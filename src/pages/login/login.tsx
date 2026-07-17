@@ -3,21 +3,20 @@ import {
   EmailInput,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { useState } from 'react';
 
 import { AuthForm, AuthLink } from '@components/auth-form/auth-form';
+import { useForm } from '@hooks/use-form';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { loginUser } from '@services/auth/actions';
 
 export const LoginPage = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({ email: '', password: '' });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    void dispatch(loginUser({ email, password }));
+    void dispatch(loginUser({ email: values.email, password: values.password }));
   };
 
   return (
@@ -38,16 +37,16 @@ export const LoginPage = (): React.JSX.Element => {
     >
       <EmailInput
         name="email"
-        value={email}
+        value={values.email}
         placeholder="E-mail"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       <PasswordInput
         name="password"
-        value={password}
+        value={values.password}
         placeholder="Пароль"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handleChange}
         extraClass="mt-6"
       />
       {error && (
