@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
+import { ProtectedRoute } from '@components/protected-route/protected-route';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
 import { FeedPage } from '@pages/feed/feed';
 import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
@@ -41,11 +42,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <LoginPage />,
+        element: <ProtectedRoute guestOnly component={<LoginPage />} />,
       },
       {
         path: 'register',
-        element: <RegisterPage />,
+        element: <ProtectedRoute guestOnly component={<RegisterPage />} />,
       },
       {
         path: 'forgot-password',
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: <ProfileLayout />,
+        element: <ProtectedRoute component={<ProfileLayout />} />,
         children: [
           {
             index: true,
