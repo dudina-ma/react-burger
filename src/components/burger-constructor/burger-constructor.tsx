@@ -6,10 +6,12 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { useCallback, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { selectUser } from '@services/auth/slice';
 import { selectBurgerTotalPrice } from '@services/burger-constructor/selectors';
 import {
   addIngredient,
@@ -174,6 +176,9 @@ const ConstructorIngredient = ({
 
 export const BurgerConstructor = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user = useAppSelector(selectUser);
   const { bun, ingredients } = useAppSelector((state) => state.burgerConstructor);
   const total = useAppSelector(selectBurgerTotalPrice);
   const { isLoading: isOrderLoading, error: orderError } = useAppSelector(
@@ -186,6 +191,11 @@ export const BurgerConstructor = (): React.JSX.Element => {
       return;
     }
 
+    if (!user) {
+      void navigate('/login', { state: { from: location } });
+      return;
+    }
+
     const ingredientIds = [bun._id, ...ingredients.map((item) => item._id), bun._id];
 
     void dispatch(createOrder(ingredientIds)).then((result) => {
@@ -194,7 +204,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
         setIsOrderModalOpen(true);
       }
     });
-  }, [dispatch, bun, ingredients]);
+  }, [dispatch, navigate, location, user, bun, ingredients]);
 
   const handleCloseOrderModal = useCallback((): void => {
     setIsOrderModalOpen(false);

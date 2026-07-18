@@ -29,3 +29,44 @@ export type TOrderResponse = {
     number: number;
   };
 };
+
+export type TUser = {
+  email: string;
+  name: string;
+};
+
+export type TRegisterRequest = TUser & {
+  password: string;
+};
+
+export type TLoginRequest = Pick<TRegisterRequest, 'email' | 'password'>;
+
+export type TUpdateUserRequest = TRegisterRequest;
+
+export type TAuthResponse = {
+  success: boolean;
+  user: TUser;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type TUserResponse = Pick<TAuthResponse, 'success' | 'user'>;
+
+export type TRefreshResponse = Pick<
+  TAuthResponse,
+  'success' | 'accessToken' | 'refreshToken'
+>;
+
+export type TLogoutResponse = {
+  success: boolean;
+  message: string;
+};
+
+export type TPasswordResetRequest = Pick<TUser, 'email'>;
+
+export type TResetPasswordRequest = {
+  password: string;
+  token: string;
+};
+
+export type TPasswordResetResponse = TLogoutResponse;

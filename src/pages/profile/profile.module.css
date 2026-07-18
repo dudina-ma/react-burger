@@ -1,0 +1,55 @@
+.page {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  width: 320px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: block;
+  padding: 16px 0;
+  color: var(--text-inactive-color);
+  text-align: left;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.linkActive {
+  color: var(--text-primary-color);
+}
+
+.description {
+  max-width: 320px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.stub {
+  margin: 0;
+}

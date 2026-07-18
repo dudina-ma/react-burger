@@ -1,21 +1,95 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
+import { ProtectedRoute } from '@components/protected-route/protected-route';
 import { useAppDispatch, useAppSelector } from '@hooks/use-redux-hooks';
+import { FeedPage } from '@pages/feed/feed';
+import { ForgotPasswordPage } from '@pages/forgot-password/forgot-password';
+import { Home } from '@pages/home/home';
+import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
+import { LoginPage } from '@pages/login/login';
+import { NotFoundPage } from '@pages/not-found/not-found';
+import { ProfilePage } from '@pages/profile/profile';
+import { ProfileLayout } from '@pages/profile/profile-layout';
+import { ProfileOrderPage } from '@pages/profile/profile-orders';
+import { RegisterPage } from '@pages/register/register';
+import { ResetPasswordPage } from '@pages/reset-password/reset-password';
+import { checkUserAuth } from '@services/auth/actions';
 import { fetchIngredients } from '@services/ingredients/actions';
 
 import styles from './app.module.css';
+
+const AppLayout = (): React.JSX.Element => (
+  <div className={styles.app}>
+    <AppHeader />
+    <Outlet />
+  </div>
+);
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+        children: [
+          {
+            path: 'ingredients/:id',
+            element: <IngredientDetails />,
+          },
+        ],
+      },
+      {
+        path: 'login',
+        element: <ProtectedRoute guestOnly component={<LoginPage />} />,
+      },
+      {
+        path: 'register',
+        element: <ProtectedRoute guestOnly component={<RegisterPage />} />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: 'feed',
+        element: <FeedPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProtectedRoute component={<ProfileLayout />} />,
+        children: [
+          {
+            index: true,
+            element: <ProfilePage />,
+          },
+          {
+            path: 'orders',
+            element: <ProfileOrderPage />,
+          },
+        ],
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
+      },
+    ],
+  },
+]);
 
 export const App = (): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.ingredients);
 
   useEffect(() => {
+    void dispatch(checkUserAuth());
     void dispatch(fetchIngredients());
   }, [dispatch]);
 
@@ -27,20 +101,7 @@ export const App = (): React.JSX.Element => {
     return <p className={`${styles.error} text text_type_main-default`}>{error}</p>;
   }
 
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <div className={styles.app}>
-        <AppHeader />
-        <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-          Соберите бургер
-        </h1>
-        <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </main>
-      </div>
-    </DndProvider>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
