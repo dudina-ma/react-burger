@@ -11,6 +11,7 @@ import { Home } from '@pages/home/home';
 import { IngredientDetails } from '@pages/ingredient-details/ingredient-details';
 import { LoginPage } from '@pages/login/login';
 import { NotFoundPage } from '@pages/not-found/not-found';
+import { OrderInfoPage } from '@pages/order-info/order-info';
 import { ProfilePage } from '@pages/profile/profile';
 import { ProfileLayout } from '@pages/profile/profile-layout';
 import { ProfileOrderPage } from '@pages/profile/profile-orders';
@@ -61,6 +62,12 @@ const router = createBrowserRouter([
       {
         path: 'feed',
         element: <FeedPage />,
+        children: [
+          {
+            path: ':id',
+            element: <OrderInfoPage />,
+          },
+        ],
       },
       {
         path: 'profile',

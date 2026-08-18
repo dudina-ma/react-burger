@@ -3,6 +3,7 @@ import {
   FormattedDate,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useAppSelector } from '@hooks/use-redux-hooks';
 import { getOrderStatusLabel, isOrderStatusDone } from '@utils/order-status';
@@ -15,11 +16,13 @@ const MAX_VISIBLE_INGREDIENTS = 6;
 
 type TOrderCardProps = {
   order: TOrder;
+  to: string;
   showStatus?: boolean;
 };
 
 export const OrderCard = ({
   order,
+  to,
   showStatus = false,
 }: TOrderCardProps): React.JSX.Element => {
   const ingredients = useAppSelector((state) => state.ingredients.items);
@@ -46,7 +49,7 @@ export const OrderCard = ({
   const statusClassName = isOrderStatusDone(order.status) ? styles.statusDone : '';
 
   return (
-    <article className={`${styles.card} p-6`}>
+    <Link to={to} className={`${styles.card} p-6`}>
       <div className={`${styles.header} mb-6`}>
         <p className={`${styles.number} text text_type_digits-default`}>
           #{order.number.toString().padStart(6, '0')}
@@ -91,6 +94,6 @@ export const OrderCard = ({
           <CurrencyIcon type="primary" />
         </p>
       </div>
-    </article>
+    </Link>
   );
 };

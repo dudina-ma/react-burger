@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import { FeedInfo } from '@components/feed-info/feed-info';
 import { OrderCard } from '@components/order-card/order-card';
@@ -20,13 +21,14 @@ export const FeedPage = (): React.JSX.Element => {
           <ul className={styles.list}>
             {feedData.orders.map((order) => (
               <li key={order._id}>
-                <OrderCard order={order} />
+                <OrderCard order={order} to={`/feed/${order._id}`} />
               </li>
             ))}
           </ul>
         </section>
         <FeedInfo data={feedData} />
       </div>
+      <Outlet />
     </main>
   );
 };

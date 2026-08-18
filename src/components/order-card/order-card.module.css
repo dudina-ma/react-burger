@@ -3,8 +3,10 @@
   box-sizing: border-box;
   width: 584px;
   color: var(--text-primary-color);
+  text-decoration: none;
   background-color: var(--background);
   border-radius: 40px;
+  cursor: pointer;
 }
 
 .header {
