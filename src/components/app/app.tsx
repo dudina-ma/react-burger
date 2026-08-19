@@ -80,6 +80,12 @@ const router = createBrowserRouter([
           {
             path: 'orders',
             element: <ProfileOrderPage />,
+            children: [
+              {
+                path: ':id',
+                element: <OrderInfoPage />,
+              },
+            ],
           },
         ],
       },

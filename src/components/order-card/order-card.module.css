@@ -9,6 +9,10 @@
   cursor: pointer;
 }
 
+.cardWide {
+  width: 844px;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -30,7 +34,9 @@
 }
 
 .status {
-  margin: 0;
+  margin-top: 0;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .statusDone {
@@ -39,8 +45,8 @@
 
 .details {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: calc(var(--offset-base-size) * 6);
 }
 
 .ingredients {
@@ -90,7 +96,8 @@
 
 .price {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: calc(var(--offset-base-size) * 2);
-  margin: 0;
+  margin: 0 0 0 auto;
 }

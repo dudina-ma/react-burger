@@ -18,12 +18,14 @@ type TOrderCardProps = {
   order: TOrder;
   to: string;
   showStatus?: boolean;
+  wide?: boolean;
 };
 
 export const OrderCard = ({
   order,
   to,
   showStatus = false,
+  wide = false,
 }: TOrderCardProps): React.JSX.Element => {
   const ingredients = useAppSelector((state) => state.ingredients.items);
 
@@ -49,7 +51,7 @@ export const OrderCard = ({
   const statusClassName = isOrderStatusDone(order.status) ? styles.statusDone : '';
 
   return (
-    <Link to={to} className={`${styles.card} p-6`}>
+    <Link to={to} className={`${styles.card} ${wide ? styles.cardWide : ''} p-6`}>
       <div className={`${styles.header} mb-6`}>
         <p className={`${styles.number} text text_type_digits-default`}>
           #{order.number.toString().padStart(6, '0')}
@@ -58,7 +60,11 @@ export const OrderCard = ({
           <FormattedDate date={new Date(order.createdAt)} />
         </p>
       </div>
-      <p className={`${styles.name} text text_type_main-medium mb-6`}>{order.name}</p>
+      <p
+        className={`${styles.name} text text_type_main-medium ${showStatus ? 'mb-2' : 'mb-6'}`}
+      >
+        {order.name}
+      </p>
       {showStatus && (
         <p
           className={`${styles.status} ${statusClassName} text text_type_main-default mb-6`}

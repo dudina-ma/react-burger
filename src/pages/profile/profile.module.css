@@ -3,6 +3,7 @@
   flex: 1;
   width: 100%;
   max-width: 1280px;
+  min-height: 0;
   margin: 0 auto;
 }
 
@@ -50,6 +51,19 @@
   gap: 16px;
 }
 
-.stub {
+.orders {
+  box-sizing: border-box;
+  width: calc(844px + var(--offset-base-size) * 4);
+  min-height: 0;
+  padding-right: calc(var(--offset-base-size) * 2);
+  overflow-y: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 4);
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
