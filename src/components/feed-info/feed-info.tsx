@@ -4,7 +4,19 @@ import type { TFeedData } from '@utils/types';
 
 import styles from './feed-info.module.css';
 
-const NUMBERS_IN_COLUMN = 5;
+const NUMBERS_PER_COLUMN = 10;
+const MAX_COLUMNS = 2;
+
+const splitNumbersIntoColumns = (numbers: number[]): number[][] => {
+  const limitedNumbers = numbers.slice(0, NUMBERS_PER_COLUMN * MAX_COLUMNS);
+  const columns: number[][] = [];
+
+  for (let index = 0; index < limitedNumbers.length; index += NUMBERS_PER_COLUMN) {
+    columns.push(limitedNumbers.slice(index, index + NUMBERS_PER_COLUMN));
+  }
+
+  return columns;
+};
 
 type TFeedInfoProps = {
   data: TFeedData;
@@ -27,15 +39,8 @@ export const FeedInfo = ({ data }: TFeedInfoProps): React.JSX.Element => {
     [data.orders]
   );
 
-  const doneColumns = [
-    doneOrders.slice(0, NUMBERS_IN_COLUMN),
-    doneOrders.slice(NUMBERS_IN_COLUMN, NUMBERS_IN_COLUMN * 2),
-  ];
-
-  const pendingColumns = [
-    pendingOrders.slice(0, NUMBERS_IN_COLUMN),
-    pendingOrders.slice(NUMBERS_IN_COLUMN, NUMBERS_IN_COLUMN * 2),
-  ];
+  const doneColumns = splitNumbersIntoColumns(doneOrders);
+  const pendingColumns = splitNumbersIntoColumns(pendingOrders);
 
   return (
     <section className={styles.container}>

@@ -4,14 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Modal } from '@components/modal/modal';
 import { OrderInfo } from '@components/order-info/order-info';
 import { useAppSelector } from '@hooks/use-redux-hooks';
-import { getMockOrderById } from '@utils/feed-mock';
+import { selectFeedOrders } from '@services/feed/slice';
 
 export const OrderInfoPage = (): React.JSX.Element | null => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const ingredients = useAppSelector((state) => state.ingredients.items);
+  const feedOrders = useAppSelector(selectFeedOrders);
 
-  const order = useMemo(() => getMockOrderById(ingredients, id), [id, ingredients]);
+  const order = useMemo(
+    () => feedOrders.find((item) => item._id === id),
+    [feedOrders, id]
+  );
 
   const handleClose = useCallback((): void => {
     void navigate('..');

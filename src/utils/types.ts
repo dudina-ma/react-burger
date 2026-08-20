@@ -88,3 +88,8 @@ export type TFeedData = {
   total: number;
   totalToday: number;
 };
+
+export type TOrdersSocketMessage = TFeedData & {
+  success: boolean;
+  message?: string;
+};

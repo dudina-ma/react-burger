@@ -169,14 +169,3 @@ export const createMockFeedData = (ingredients: TIngredient[]): TFeedData => {
     totalToday: 138,
   };
 };
-
-export const getMockOrderById = (
-  ingredients: TIngredient[],
-  id: string | undefined
-): TOrder | undefined => {
-  if (!id) {
-    return undefined;
-  }
-
-  return createMockFeedData(ingredients).orders.find((order) => order._id === id);
-};
