@@ -5,15 +5,19 @@ import { Modal } from '@components/modal/modal';
 import { OrderInfo } from '@components/order-info/order-info';
 import { useAppSelector } from '@hooks/use-redux-hooks';
 import { selectFeedOrders } from '@services/feed/slice';
+import { selectUserOrders } from '@services/user-orders/slice';
 
 export const OrderInfoPage = (): React.JSX.Element | null => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const feedOrders = useAppSelector(selectFeedOrders);
+  const userOrders = useAppSelector(selectUserOrders);
 
   const order = useMemo(
-    () => feedOrders.find((item) => item._id === id),
-    [feedOrders, id]
+    () =>
+      feedOrders.find((item) => item._id === id) ??
+      userOrders.find((item) => item._id === id),
+    [feedOrders, userOrders, id]
   );
 
   const handleClose = useCallback((): void => {

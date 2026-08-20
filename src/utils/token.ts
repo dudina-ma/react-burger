@@ -9,6 +9,16 @@ export const setTokens = (accessToken: string, refreshToken: string): void => {
 export const getAccessToken = (): string | null =>
   localStorage.getItem(ACCESS_TOKEN_KEY);
 
+export const getAccessTokenWithoutBearer = (): string | null => {
+  const accessToken = getAccessToken();
+
+  if (!accessToken) {
+    return null;
+  }
+
+  return accessToken.replace(/^Bearer\s+/i, '');
+};
+
 export const isTokenExists = (): boolean => getAccessToken() !== null;
 
 export const getRefreshToken = (): string | null =>

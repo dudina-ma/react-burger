@@ -10,6 +10,14 @@ import {
 } from './feed/slice';
 import { socketMiddleware } from './middleware/socket-middleware';
 import { rootReducer } from './root-reducer';
+import {
+  connectUserOrders,
+  disconnectUserOrders,
+  onUserOrdersClose,
+  onUserOrdersError,
+  onUserOrdersMessage,
+  onUserOrdersOpen,
+} from './user-orders/slice';
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -22,6 +30,14 @@ export const store = configureStore({
         onError,
         onMessage,
         onOpen,
+      }),
+      socketMiddleware({
+        connect: connectUserOrders,
+        disconnect: disconnectUserOrders,
+        onClose: onUserOrdersClose,
+        onError: onUserOrdersError,
+        onMessage: onUserOrdersMessage,
+        onOpen: onUserOrdersOpen,
       })
     ),
 });
