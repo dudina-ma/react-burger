@@ -83,6 +83,11 @@ export type TOrder = {
   updatedAt: string;
 };
 
+export type TOrderByIdResponse = {
+  success: boolean;
+  order: TOrder;
+};
+
 export type TFeedData = {
   orders: TOrder[];
   total: number;
