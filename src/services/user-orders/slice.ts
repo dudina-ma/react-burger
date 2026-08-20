@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { normalizeOrdersWSMessage } from '@utils/normalize-orders-ws-message';
+
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TOrder, TOrdersSocketMessage } from '@utils/types';
 
@@ -45,17 +47,19 @@ export const userOrdersSlice = createSlice({
       state.isLoading = false;
     },
     onMessage: (state, action: PayloadAction<TOrdersSocketMessage>) => {
-      if (!action.payload.success) {
-        state.error = action.payload.message ?? 'Не удалось получить заказы';
+      const message = normalizeOrdersWSMessage(action.payload);
+
+      if (!message.success) {
+        state.error = message.message ?? 'Не удалось получить заказы';
         state.isLoading = false;
         return;
       }
 
       state.error = null;
       state.isLoading = false;
-      state.orders = action.payload.orders;
-      state.total = action.payload.total;
-      state.totalToday = action.payload.totalToday;
+      state.orders = message.orders;
+      state.total = message.total;
+      state.totalToday = message.totalToday;
     },
     onOpen: (state) => {
       state.isConnected = true;
