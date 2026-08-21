@@ -4,7 +4,7 @@ import {
   Logo,
   ProfileIcon,
 } from '@krgaa/react-developer-burger-ui-components';
-import { NavLink, matchPath, useLocation } from 'react-router-dom';
+import { Link, NavLink, matchPath, useLocation } from 'react-router-dom';
 
 import styles from './app-header.module.css';
 
@@ -76,9 +76,9 @@ export const AppHeader = (): React.JSX.Element => {
             <HeaderNavLink key={item.to} item={item} />
           ))}
         </div>
-        <div className={styles.logo}>
+        <Link to="/" className={styles.logo} aria-label="На главную">
           <Logo />
-        </div>
+        </Link>
         <HeaderNavLink item={PROFILE_NAV} />
       </nav>
     </header>

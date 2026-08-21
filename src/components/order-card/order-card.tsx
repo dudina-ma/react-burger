@@ -76,7 +76,7 @@ export const OrderCard = ({
         <ul className={styles.ingredients}>
           {visibleIngredients.map((ingredient, index) => (
             <li
-              key={ingredient._id}
+              key={`${ingredient._id}-${index}`}
               className={styles.ingredient}
               style={{ zIndex: MAX_VISIBLE_INGREDIENTS - index }}
             >
