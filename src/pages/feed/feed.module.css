@@ -1,11 +1,33 @@
 .page {
   display: flex;
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   width: 100%;
+  max-width: 1280px;
+  min-height: 0;
+  margin: 0 auto;
 }
 
-.stub {
+.content {
+  display: flex;
+  flex: 1;
+  gap: calc(var(--offset-base-size) * 15);
+  min-height: 0;
+}
+
+.orders {
+  box-sizing: border-box;
+  width: calc(584px + var(--offset-base-size) * 4);
+  min-height: 0;
+  padding-right: calc(var(--offset-base-size) * 2);
+  overflow-y: auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 4);
   margin: 0;
+  padding: 0;
+  list-style: none;
 }

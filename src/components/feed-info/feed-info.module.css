@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 15);
+  width: 580px;
+}
+
+.boards {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--offset-base-size) * 9);
+}
+
+.board {
+  flex: 1;
+}
+
+.numbers {
+  display: flex;
+  gap: calc(var(--offset-base-size) * 15);
+  margin: calc(var(--offset-base-size) * 3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ready {
+  color: #0cc;
+}
+
+.total {
+  text-shadow:
+    0 0 16px rgb(51 51 255 / 25%),
+    4px 0 8px rgb(51 51 255 / 25%),
+    0 4px 32px rgb(51 51 255 / 50%);
+}

@@ -10,11 +10,19 @@ const modalRoot = document.getElementById('modals-root')!;
 
 type TModalProps = {
   title?: string;
+  titleClassName?: string;
+  titleCentered?: boolean;
   onClose: () => void;
   children: React.ReactNode;
 };
 
-export const Modal = ({ title, onClose, children }: TModalProps): React.JSX.Element => {
+export const Modal = ({
+  title,
+  titleClassName = 'text text_type_main-large',
+  titleCentered = false,
+  onClose,
+  children,
+}: TModalProps): React.JSX.Element => {
   const paddingClass = title ? 'pt-10 pl-10 pr-10 pb-15' : 'pt-15 pl-10 pr-10 pb-30';
   const contentClass = title ? '' : 'pt-15';
 
@@ -36,8 +44,16 @@ export const Modal = ({ title, onClose, children }: TModalProps): React.JSX.Elem
     <>
       <ModalOverlay onClick={onClose} />
       <div className={`${styles.modal} ${paddingClass}`}>
-        <header className={`${styles.header} ${!title ? styles.header_no_title : ''}`}>
-          {title && <h3 className="text text_type_main-large m-0">{title}</h3>}
+        <header
+          className={`${styles.header} ${!title ? styles.header_no_title : ''} ${titleCentered ? styles.header_centered : ''}`}
+        >
+          {title && (
+            <h3
+              className={`${titleClassName} m-0 ${titleCentered ? styles.title_centered : ''}`}
+            >
+              {title}
+            </h3>
+          )}
           <CloseIcon type="primary" onClick={onClose} />
         </header>
         <div className={contentClass}>{children}</div>

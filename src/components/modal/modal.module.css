@@ -19,3 +19,14 @@
 .header_no_title {
   justify-content: flex-end;
 }
+
+.header_centered {
+  position: relative;
+  justify-content: flex-end;
+}
+
+.title_centered {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

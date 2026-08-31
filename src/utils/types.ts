@@ -70,3 +70,31 @@ export type TResetPasswordRequest = {
 };
 
 export type TPasswordResetResponse = TLogoutResponse;
+
+export type TOrderStatus = 'created' | 'pending' | 'done';
+
+export type TOrder = {
+  _id: string;
+  ingredients: string[];
+  status: TOrderStatus;
+  name: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TOrderByIdResponse = {
+  success: boolean;
+  order: TOrder;
+};
+
+export type TFeedData = {
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+};
+
+export type TOrdersSocketMessage = TFeedData & {
+  success: boolean;
+  message?: string;
+};

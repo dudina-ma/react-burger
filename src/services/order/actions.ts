@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { requestWithAuth } from '@utils/api';
+import { request, requestWithAuth } from '@utils/api';
+import { isValidOrder } from '@utils/normalize-orders-ws-message';
 
-import type { TOrderResponse } from '@utils/types';
+import type { TOrderByIdResponse, TOrderResponse } from '@utils/types';
 
 export const createOrder = createAsyncThunk(
   'order/createOrder',
@@ -16,5 +17,18 @@ export const createOrder = createAsyncThunk(
     });
 
     return response;
+  }
+);
+
+export const fetchOrderById = createAsyncThunk(
+  'order/fetchOrderById',
+  async (orderId: string) => {
+    const { order } = await request<TOrderByIdResponse>(`/api/orders/${orderId}`);
+
+    if (!isValidOrder(order)) {
+      throw new Error('Некорректные данные заказа');
+    }
+
+    return order;
   }
 );
