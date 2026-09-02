@@ -14,7 +14,7 @@ type TUserOrdersState = {
   totalToday: number;
 };
 
-const initialState: TUserOrdersState = {
+export const initialState: TUserOrdersState = {
   error: null,
   isConnected: false,
   isLoading: false,
