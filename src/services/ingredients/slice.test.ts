@@ -1,17 +1,11 @@
 import { describe, it, expect } from 'vitest';
 
 import { fetchIngredients } from './actions';
-import { ingredientsSlice } from './slice';
+import { ingredientsSlice, initialState } from './slice';
 
 import type { TIngredient } from '@utils/types';
 
 const reducer = ingredientsSlice.reducer;
-
-const initialState = {
-  items: [],
-  isLoading: true,
-  error: null,
-};
 
 const errorWithoutMessage = { name: 'Error' } as unknown as Error;
 

@@ -8,20 +8,12 @@ import {
   onError,
   onMessage,
   onOpen,
+  initialState,
 } from './slice';
 
 import type { TOrder, TOrdersSocketMessage } from '@utils/types';
 
 const reducer = feedSlice.reducer;
-
-const initialState = {
-  error: null,
-  isConnected: false,
-  isLoading: false,
-  orders: [],
-  total: 0,
-  totalToday: 0,
-};
 
 const mockOrder: TOrder = {
   _id: 'order-id',

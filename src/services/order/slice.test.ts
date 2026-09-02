@@ -1,20 +1,11 @@
 import { describe, it, expect } from 'vitest';
 
 import { createOrder, fetchOrderById } from './actions';
-import { orderSlice, resetOrder, clearCurrentOrder } from './slice';
+import { orderSlice, resetOrder, clearCurrentOrder, initialState } from './slice';
 
 import type { TOrder, TOrderResponse } from '@utils/types';
 
 const reducer = orderSlice.reducer;
-
-const initialState = {
-  orderNumber: null,
-  orderName: null,
-  isLoading: false,
-  error: null,
-  currentOrder: null,
-  currentOrderError: null,
-};
 
 const mockOrderResponse: TOrderResponse = {
   success: true,

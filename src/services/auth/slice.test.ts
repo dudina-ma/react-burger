@@ -8,7 +8,7 @@ import {
   resetPassword,
   updateUser,
 } from './actions';
-import { authSlice, setIsAuthChecked, setUser } from './slice';
+import { authSlice, setIsAuthChecked, setUser, initialState } from './slice';
 
 import type {
   TAuthResponse,
@@ -19,13 +19,6 @@ import type {
 } from '@utils/types';
 
 const reducer = authSlice.reducer;
-
-const initialState = {
-  user: null,
-  isAuthChecked: false,
-  isLoading: false,
-  error: null,
-};
 
 const errorWithoutMessage = { name: 'Error' } as unknown as Error;
 

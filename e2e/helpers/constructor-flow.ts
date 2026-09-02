@@ -54,7 +54,7 @@ export const runConstructorScenario = async (page: Page): Promise<void> => {
   await expect(page.getByRole('heading', { name: main.name, exact: true })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('heading', { name: 'Детали ингредиента' })).toBeHidden();
-  await expect(page).toHaveURL('/');
+  await expect(page).toHaveURL(/\/react-burger\/#\/?$/);
 
   const mainInConstructor = constructorList.getByText(main.name).locator('xpath=ancestor::li[1]');
   const sauceInConstructor = constructorList.getByText(sauce.name).locator('xpath=ancestor::li[1]');

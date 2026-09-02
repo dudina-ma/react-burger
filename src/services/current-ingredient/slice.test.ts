@@ -4,15 +4,12 @@ import {
   currentIngredientSlice,
   setCurrentIngredient,
   clearCurrentIngredient,
+  initialState,
 } from './slice';
 
 import type { TIngredient } from '@utils/types';
 
 const reducer = currentIngredientSlice.reducer;
-
-const initialState = {
-  item: null,
-};
 
 const mockIngredient: TIngredient = {
   _id: 'ingredient-1',

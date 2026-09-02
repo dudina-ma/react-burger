@@ -7,16 +7,12 @@ import {
   removeConstructorIngredient,
   moveConstructorIngredient,
   clearConstructor,
+  initialState,
 } from './slice';
 
 import type { TConstructorIngredient, TIngredient } from '@utils/types';
 
 const reducer = burgerConstructorSlice.reducer;
-
-const initialState = {
-  bun: null,
-  ingredients: [],
-};
 
 const mockBun: TIngredient = {
   _id: 'bun-1',
