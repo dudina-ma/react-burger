@@ -1,6 +1,6 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect } from 'react';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createHashRouter } from 'react-router-dom';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { ProtectedRoute } from '@components/protected-route/protected-route';
@@ -29,7 +29,7 @@ const AppLayout = (): React.JSX.Element => (
   </div>
 );
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     element: <AppLayout />,
     children: [

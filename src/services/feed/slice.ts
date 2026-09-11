@@ -14,7 +14,7 @@ type TFeedState = {
   totalToday: number;
 };
 
-const initialState: TFeedState = {
+export const initialState: TFeedState = {
   error: null,
   isConnected: false,
   isLoading: false,

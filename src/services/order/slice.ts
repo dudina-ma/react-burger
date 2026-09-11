@@ -10,17 +10,15 @@ type TOrderState = {
   isLoading: boolean;
   error: string | null;
   currentOrder: TOrder | null;
-  isCurrentOrderLoading: boolean;
   currentOrderError: string | null;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orderNumber: null,
   orderName: null,
   isLoading: false,
   error: null,
   currentOrder: null,
-  isCurrentOrderLoading: false,
   currentOrderError: null,
 };
 
@@ -35,7 +33,6 @@ export const orderSlice = createSlice({
     },
     clearCurrentOrder: (state) => {
       state.currentOrder = null;
-      state.isCurrentOrderLoading = false;
       state.currentOrderError = null;
     },
   },
@@ -55,16 +52,13 @@ export const orderSlice = createSlice({
         state.error = action.error.message ?? 'Не удалось оформить заказ';
       })
       .addCase(fetchOrderById.pending, (state) => {
-        state.isCurrentOrderLoading = true;
         state.currentOrderError = null;
         state.currentOrder = null;
       })
       .addCase(fetchOrderById.fulfilled, (state, action) => {
-        state.isCurrentOrderLoading = false;
         state.currentOrder = action.payload;
       })
       .addCase(fetchOrderById.rejected, (state, action) => {
-        state.isCurrentOrderLoading = false;
         state.currentOrder = null;
         state.currentOrderError = action.error.message ?? 'Не удалось загрузить заказ';
       });
